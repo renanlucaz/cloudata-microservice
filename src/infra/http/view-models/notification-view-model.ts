@@ -1,4 +1,4 @@
-import type { Notification } from '@app/entities/notification';
+import { Notification } from '@app/entities/notification';
 
 export class NotificationViewModule {
   static toHHTP(notification: Notification) {
