@@ -1,23 +1,99 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Notification {
-  id           String    @id
-  recipient_id String
-  content      String
-  category     String
-  canceledAt   DateTime?
-  readAt       DateTime?
-  createdAt    DateTime  @default(now())
+model tb_usuarios {
+  id_usuario   String         @id(map: "tb_usuarios_pk") @db.VarChar(120)
+  nm_usuario   String?        @db.VarChar(120)
+  email        String?        @db.VarChar(120)
+  senha        String?        @db.VarChar(120)
+  tb_enderecos tb_enderecos[]
+}
 
-  @@index([recipient_id])
+model tb_bairros {
+  id_bairro                  String           @id(map: "tb_bairros_pk") @db.VarChar(120)
+  nm_bairro                  String?          @db.VarChar(120)
+  tb_municipios_id_municipio String           @db.VarChar(120)
+  tb_municipios              tb_municipios    @relation(fields: [tb_municipios_id_municipio], references: [id_municipio], onDelete: NoAction, onUpdate: NoAction, map: "tb_bairros_tb_municipios_fk")
+  tb_logradouros             tb_logradouros[]
+}
+
+model tb_enderecos {
+  id_endereco                  String                        @id(map: "tb_enderecos_pk") @db.VarChar(120)
+  latitude                     Decimal?                      @db.Decimal
+  longitude                    Decimal?                      @db.Decimal
+  dt_criacao                   DateTime?                     @db.Date
+  numero                       Int?
+  tb_usuarios_id_usuario       String                        @db.VarChar(120)
+  tb_logradouros_id_logradouro String                        @unique(map: "tb_enderecos__idx") @db.VarChar(120)
+  tb_logradouros               tb_logradouros                @relation(fields: [tb_logradouros_id_logradouro], references: [id_logradouro], onDelete: NoAction, onUpdate: NoAction, map: "tb_enderecos_tb_logradouros_fk")
+  tb_usuarios                  tb_usuarios                   @relation(fields: [tb_usuarios_id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "tb_enderecos_tb_usuarios_fk")
+  tb_estacoes_energia          tb_estacoes_energia[]
+  tb_registros_meteorologicos  tb_registros_meteorologicos[]
+  tb_risco_inundacoes          tb_risco_inundacoes[]
+}
+
+model tb_estacoes_energia {
+  id_estacao               String       @id(map: "tb_estacoes_energia_pk") @db.VarChar(5)
+  nome                     String?      @db.VarChar(120)
+  uf                       String?      @db.Char(2)
+  status                   String?      @db.VarChar(120)
+  latitude                 Decimal?     @db.Decimal
+  longitude                Decimal?     @db.Decimal
+  altitude                 Decimal?     @db.Decimal
+  dt_instalacao            DateTime?    @db.Date
+  tb_enderecos_id_endereco String       @db.VarChar(120)
+  tb_enderecos             tb_enderecos @relation(fields: [tb_enderecos_id_endereco], references: [id_endereco], onDelete: NoAction, onUpdate: NoAction, map: "tb_estacoes_energia_tb_enderecos_fk")
+}
+
+model tb_estados {
+  id_uf         String          @id(map: "tb_estados_pk") @db.VarChar(120)
+  nm_estado     String?         @db.Char(2)
+  tb_municipios tb_municipios[]
+}
+
+model tb_logradouros {
+  id_logradouro        String        @id(map: "tb_logradouros_pk") @db.VarChar(120)
+  nm_logradouro        String?       @db.VarChar(120)
+  tb_bairros_id_bairro String        @db.VarChar(120)
+  tb_enderecos         tb_enderecos?
+  tb_bairros           tb_bairros    @relation(fields: [tb_bairros_id_bairro], references: [id_bairro], onDelete: NoAction, onUpdate: NoAction, map: "tb_logradouros_tb_bairros_fk")
+}
+
+model tb_municipios {
+  id_municipio     String       @id(map: "tb_municipios_pk") @db.VarChar(120)
+  nm_municipio     String?      @db.VarChar(120)
+  tb_estados_id_uf String       @db.VarChar(120)
+  tb_bairros       tb_bairros[]
+  tb_estados       tb_estados   @relation(fields: [tb_estados_id_uf], references: [id_uf], onDelete: NoAction, onUpdate: NoAction, map: "tb_municipios_tb_estados_fk")
+}
+
+model tb_registros_meteorologicos {
+  id_registro              String       @id(map: "tb_registros_meteorologicos_pk") @db.VarChar(120)
+  prb_chuva                Decimal?     @db.Decimal
+  umidade_max              Decimal?     @db.Decimal
+  umidade_min              Decimal?     @db.Decimal
+  vel_vento_max            Decimal?     @db.Decimal
+  vel_vento_min            Decimal?     @db.Decimal
+  temperatura_max          Decimal?     @db.Decimal
+  temperatura_min          Decimal?     @db.Decimal
+  descricao                String?      @db.VarChar(120)
+  latitude                 Decimal?     @db.Decimal
+  longitude                Decimal?     @db.Decimal
+  tipo_registro            String?      @db.Char(2)
+  tb_enderecos_id_endereco String       @db.VarChar(120)
+  tb_enderecos             tb_enderecos @relation(fields: [tb_enderecos_id_endereco], references: [id_endereco], onDelete: NoAction, onUpdate: NoAction, map: "tb_registros_meteorologicos_tb_enderecos_fk")
+}
+
+model tb_risco_inundacoes {
+  id_risco                 String       @id(map: "tb_risco_inundacoes_pk") @db.VarChar(120)
+  valor_risco              Decimal?     @db.Decimal
+  dt_risco                 DateTime?    @db.Date
+  tb_enderecos_id_endereco String       @db.VarChar(120)
+  tb_enderecos             tb_enderecos @relation(fields: [tb_enderecos_id_endereco], references: [id_endereco], onDelete: NoAction, onUpdate: NoAction, map: "tb_risco_inundacoes_tb_enderecos_fk")
 }

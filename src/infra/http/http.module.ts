@@ -1,23 +1,12 @@
 import { Module } from '@nestjs/common';
-import { NotificationsController } from './controllers/notifications.controller';
-import { SendNotification } from '../../app/use-cases/send-notification';
 import { DatabaseModule } from '../database/database.module';
-import { CancelNotification } from '@app/use-cases/cancel-notification';
-import { CountRecipientNotifications } from '@app/use-cases/count-recipient-notifications';
-import { GetRecipientNotifications } from '@app/use-cases/get-recipient-notifications';
-import { ReadNotification } from '@app/use-cases/read-notification';
-import { UnreadNotification } from '@app/use-cases/unread-notification';
+import { GetAllUsers } from '@app/use-cases/user/get-all-users';
+import { UsersController } from './controllers/users.controller';
+import { CreateNewUser } from '@app/use-cases/user/create-new-user';
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [NotificationsController],
-  providers: [
-    SendNotification,
-    CancelNotification,
-    CountRecipientNotifications,
-    GetRecipientNotifications,
-    ReadNotification,
-    UnreadNotification,
-  ],
+  controllers: [UsersController],
+  providers: [GetAllUsers, CreateNewUser],
 })
 export class HttpModule {}
