@@ -2,6 +2,8 @@ import { GetAllUsers } from '@app/use-cases/user/get-all-users';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import { CreateNewUser } from '@app/use-cases/user/create-new-user';
+import { UserViewModel } from '../view-module/user-view-model';
+import { randomUUID } from 'node:crypto';
 
 @Controller('users')
 export class UsersController {
@@ -15,11 +17,7 @@ export class UsersController {
     const { users } = await this.getAllUsers.execute();
 
     return {
-      users: users.map((user) => ({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-      })),
+      users: users.map(UserViewModel.toHTTP),
     };
   }
 
@@ -28,6 +26,7 @@ export class UsersController {
     const { email, name, password } = body;
 
     const { user } = await this.createNewUser.execute({
+      id: randomUUID(),
       email,
       name,
       password,

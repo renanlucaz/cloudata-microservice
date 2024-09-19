@@ -7,6 +7,7 @@ interface CreateNewUserResponse {
 }
 
 interface CreateNewUserRequest {
+  id: string;
   name: string;
   email: string;
   password: string;
@@ -17,9 +18,9 @@ export class CreateNewUser {
   constructor(private usersRepository: UsersRepository) {}
 
   async execute(request: CreateNewUserRequest): Promise<CreateNewUserResponse> {
-    const { email, name, password } = request;
+    const { id, email, name, password } = request;
 
-    const user = new User({ email, name, password });
+    const user = new User({ id, email, name, password });
 
     await this.usersRepository.createNewUser(user);
 

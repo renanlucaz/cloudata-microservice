@@ -16,6 +16,7 @@ export class PrismaUserMapper {
       name: raw.nm_usuario,
       password: raw.senha,
       email: raw.email,
+      id: raw.id_usuario,
     });
   }
 }

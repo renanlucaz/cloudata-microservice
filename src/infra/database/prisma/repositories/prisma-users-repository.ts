@@ -16,10 +16,6 @@ export class PrismaUsersRepository implements UsersRepository {
   async getUserList(): Promise<User[]> {
     const users = await this.prismaService.tb_usuarios.findMany();
 
-    console.log(
-      new User({ email: '123123', name: '123123', password: '123123' }),
-    );
-
     return users.map(PrismaUserMapper.toDomain);
   }
 }
