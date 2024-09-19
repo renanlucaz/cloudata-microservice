@@ -1,4 +1,4 @@
-{{
+{
     "workbench.startupEditor": "newUntitledFile",
     "editor.fontSize": 13,
     "editor.lineHeight": 1.8,
@@ -109,7 +109,7 @@
       ".vscode": true
       // "node_modules": true
     },
-    "workbench.iconTheme": "symbols",
+    "workbench.iconTheme": "material-icon-theme",
     "update.mode": "default",
     "terminal.integrated.gpuAcceleration": "on",
     "terminal.integrated.defaultProfile.osx": "fish",
@@ -179,4 +179,4 @@
     },
     "workbench.layoutControl.enabled": false,
     "workbench.colorTheme": "Catppuccin Latte"
-  }}
+  }
