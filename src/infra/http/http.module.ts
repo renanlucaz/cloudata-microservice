@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../database/database.module';
-import { GetAllUsers } from '@app/use-cases/user/get-all-users';
+import { ListUsersService } from '@app/services/user/list-users.service';
 import { UsersController } from './controllers/users.controller';
-import { CreateNewUser } from '@app/use-cases/user/create-new-user';
+
+import { CreateUserService } from '@app/services/user/create-user.service';
+import { FindUserService } from '@app/services/user/find-user.service';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [UsersController],
-  providers: [GetAllUsers, CreateNewUser],
+  providers: [ListUsersService, CreateUserService, FindUserService],
 })
 export class HttpModule {}

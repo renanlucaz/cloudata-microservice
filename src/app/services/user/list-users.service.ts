@@ -2,15 +2,15 @@ import { User } from '@app/entities/User';
 import { UsersRepository } from '@app/repositories/users-repository';
 import { Injectable } from '@nestjs/common';
 
-interface GetAllUsersResponse {
+interface ListUsersServiceResponse {
   users: User[];
 }
 
 @Injectable()
-export class GetAllUsers {
+export class ListUsersService {
   constructor(private usersRepository: UsersRepository) {}
 
-  async execute(): Promise<GetAllUsersResponse> {
+  async execute(): Promise<ListUsersServiceResponse> {
     const users = await this.usersRepository.getUserList();
 
     return {

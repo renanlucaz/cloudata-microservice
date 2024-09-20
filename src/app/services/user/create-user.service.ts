@@ -2,11 +2,11 @@ import { User } from '@app/entities/User';
 import { UsersRepository } from '@app/repositories/users-repository';
 import { Injectable } from '@nestjs/common';
 
-interface CreateNewUserResponse {
+interface CreateUserServiceResponse {
   user: User;
 }
 
-interface CreateNewUserRequest {
+interface CreateUserServiceRequest {
   id: string;
   name: string;
   email: string;
@@ -14,10 +14,12 @@ interface CreateNewUserRequest {
 }
 
 @Injectable()
-export class CreateNewUser {
+export class CreateUserService {
   constructor(private usersRepository: UsersRepository) {}
 
-  async execute(request: CreateNewUserRequest): Promise<CreateNewUserResponse> {
+  async execute(
+    request: CreateUserServiceRequest,
+  ): Promise<CreateUserServiceResponse> {
     const { id, email, name, password } = request;
 
     const user = new User({ id, email, name, password });

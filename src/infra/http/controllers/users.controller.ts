@@ -1,20 +1,22 @@
-import { GetAllUsers } from '@app/use-cases/user/get-all-users';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ListUsersService } from '@app/services/user/list-users.service';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
-import { CreateNewUser } from '@app/use-cases/user/create-new-user';
+import { CreateUserService } from '@app/services/user/create-user.service';
 import { UserViewModel } from '../view-module/user-view-model';
 import { randomUUID } from 'node:crypto';
+import { FindUserService } from '@app/services/user/find-user.service';
 
 @Controller('users')
 export class UsersController {
   constructor(
-    private getAllUsers: GetAllUsers,
-    private createNewUser: CreateNewUser,
+    private listUsersService: ListUsersService,
+    private createNewUser: CreateUserService,
+    private findUserById: FindUserService,
   ) {}
 
   @Get()
   async getAll() {
-    const { users } = await this.getAllUsers.execute();
+    const { users } = await this.listUsersService.execute();
 
     return {
       users: users.map(UserViewModel.toHTTP),
@@ -33,5 +35,12 @@ export class UsersController {
     });
 
     return user;
+  }
+
+  @Get(':id')
+  async findById(@Param('id') id: string) {
+    const { user } = await this.findUserById.execute({ userId: id });
+
+    return UserViewModel.toHTTP(user);
   }
 }
