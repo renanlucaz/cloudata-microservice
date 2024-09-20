@@ -3,7 +3,7 @@ import { UsersRepository } from '@app/repositories/users-repository';
 import { Injectable } from '@nestjs/common';
 
 interface FindUserServiceRequest {
-  userId: string;
+  email: string;
 }
 
 interface FindUserServiceResponse {
@@ -15,9 +15,9 @@ export class FindUserService {
   constructor(private userRepository: UsersRepository) {}
 
   async execute({
-    userId,
+    email,
   }: FindUserServiceRequest): Promise<FindUserServiceResponse> {
-    const user = await this.userRepository.findUserById(userId);
+    const user = await this.userRepository.findUserByEmail(email);
 
     return { user };
   }

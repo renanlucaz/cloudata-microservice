@@ -1,5 +1,5 @@
 import { UsersRepository } from '@app/repositories/users-repository';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { User } from '@app/entities/User';
 import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
@@ -14,10 +14,14 @@ export class PrismaUsersRepository implements UsersRepository {
     return users.map(PrismaUserMapper.toDomain);
   }
 
-  async findUserById(userId: string): Promise<User> {
-    const user = await this.prismaService.tb_usuarios.findUnique({
-      where: { id_usuario: userId },
+  async findUserByEmail(email: string): Promise<User> {
+    const user = await this.prismaService.tb_usuarios.findFirst({
+      where: { email },
     });
+
+    if (!user) {
+      throw new HttpException('Usuário não encontado!', 401);
+    }
 
     return PrismaUserMapper.toDomain(user);
   }

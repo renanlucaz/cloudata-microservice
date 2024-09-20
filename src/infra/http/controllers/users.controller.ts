@@ -1,10 +1,11 @@
 import { ListUsersService } from '@app/services/user/list-users.service';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import { CreateUserService } from '@app/services/user/create-user.service';
 import { UserViewModel } from '../view-module/user-view-model';
 import { randomUUID } from 'node:crypto';
 import { FindUserService } from '@app/services/user/find-user.service';
+import { AuthGuard } from '@app/guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -14,6 +15,7 @@ export class UsersController {
     private findUserById: FindUserService,
   ) {}
 
+  @UseGuards(AuthGuard)
   @Get()
   async getAll() {
     const { users } = await this.listUsersService.execute();
@@ -23,6 +25,7 @@ export class UsersController {
     };
   }
 
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() body: CreateUserDTO) {
     const { email, name, password } = body;
@@ -37,9 +40,10 @@ export class UsersController {
     return user;
   }
 
-  @Get(':id')
-  async findById(@Param('id') id: string) {
-    const { user } = await this.findUserById.execute({ userId: id });
+  @UseGuards(AuthGuard)
+  @Get(':email')
+  async findById(@Param('email') email: string) {
+    const { user } = await this.findUserById.execute({ email });
 
     return UserViewModel.toHTTP(user);
   }

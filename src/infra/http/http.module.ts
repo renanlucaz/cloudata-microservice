@@ -5,10 +5,26 @@ import { UsersController } from './controllers/users.controller';
 
 import { CreateUserService } from '@app/services/user/create-user.service';
 import { FindUserService } from '@app/services/user/find-user.service';
+import { AuthController } from './controllers/auth.controller';
+import { AuthService } from '@app/services/auth/auth.service';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
-  imports: [DatabaseModule],
-  controllers: [UsersController],
-  providers: [ListUsersService, CreateUserService, FindUserService],
+  imports: [
+    DatabaseModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '30d' },
+    }),
+  ],
+  controllers: [UsersController, AuthController],
+  providers: [
+    ListUsersService,
+    CreateUserService,
+    FindUserService,
+    AuthService,
+    JwtService,
+  ],
 })
 export class HttpModule {}
