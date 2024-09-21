@@ -4,6 +4,8 @@ import { UsersRepository } from '@app/repositories/users-repository';
 import { AddressRepository } from '@app/repositories/address-repository';
 import { PrismaUsersRepository } from './prisma/repositories/prisma-users-repository';
 import { PrismaAddressRepository } from './prisma/repositories/prisma-address-repository';
+import { EnergyStationRepository } from '@app/repositories/energy-station.repository';
+import { PrismaEnergyStationsRepository } from './prisma/repositories/prisma-energy-stations.repository';
 
 @Module({
   providers: [
@@ -16,7 +18,11 @@ import { PrismaAddressRepository } from './prisma/repositories/prisma-address-re
       provide: AddressRepository,
       useClass: PrismaAddressRepository,
     },
+    {
+      provide: EnergyStationRepository,
+      useClass: PrismaEnergyStationsRepository,
+    },
   ],
-  exports: [UsersRepository, AddressRepository],
+  exports: [UsersRepository, AddressRepository, EnergyStationRepository],
 })
 export class DatabaseModule {}

@@ -33,22 +33,19 @@ model tb_enderecos {
   tb_logradouros_id_logradouro String                        @unique(map: "tb_enderecos__idx") @db.VarChar(120)
   tb_logradouros               tb_logradouros                @relation(fields: [tb_logradouros_id_logradouro], references: [id_logradouro], onDelete: NoAction, onUpdate: NoAction, map: "tb_enderecos_tb_logradouros_fk")
   tb_usuarios                  tb_usuarios                   @relation(fields: [tb_usuarios_id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction, map: "tb_enderecos_tb_usuarios_fk")
-  tb_estacoes_energia          tb_estacoes_energia[]
   tb_registros_meteorologicos  tb_registros_meteorologicos[]
   tb_risco_inundacoes          tb_risco_inundacoes[]
 }
 
 model tb_estacoes_energia {
-  id_estacao               String       @id(map: "tb_estacoes_energia_pk") @db.VarChar(5)
-  nome                     String?      @db.VarChar(120)
-  uf                       String?      @db.Char(2)
-  status                   String?      @db.VarChar(120)
-  latitude                 Decimal?     @db.Decimal
-  longitude                Decimal?     @db.Decimal
-  altitude                 Decimal?     @db.Decimal
-  dt_instalacao            DateTime?    @db.Date
-  tb_enderecos_id_endereco String       @db.VarChar(120)
-  tb_enderecos             tb_enderecos @relation(fields: [tb_enderecos_id_endereco], references: [id_endereco], onDelete: NoAction, onUpdate: NoAction, map: "tb_estacoes_energia_tb_enderecos_fk")
+  id_estacao    String    @id(map: "tb_estacoes_energia_pk") @db.VarChar(5)
+  nome          String?   @db.VarChar(120)
+  uf            String?   @db.Char(2)
+  status        String?   @db.VarChar(120)
+  latitude      Decimal?  @db.Decimal
+  longitude     Decimal?  @db.Decimal
+  altitude      Decimal?  @db.Decimal
+  dt_instalacao DateTime? @db.Date
 }
 
 model tb_estados {
