@@ -25,7 +25,6 @@ export class UsersController {
     };
   }
 
-  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() body: CreateUserDTO) {
     const { email, name, password } = body;
@@ -37,7 +36,7 @@ export class UsersController {
       password,
     });
 
-    return user;
+    return UserViewModel.toHTTP(user);
   }
 
   @UseGuards(AuthGuard)

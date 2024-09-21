@@ -28,7 +28,7 @@ model tb_enderecos {
   latitude                     Decimal?                      @db.Decimal
   longitude                    Decimal?                      @db.Decimal
   dt_criacao                   DateTime?                     @db.Date
-  numero                       Int?
+  numero                       String                        @db.VarChar(120)
   tb_usuarios_id_usuario       String                        @db.VarChar(120)
   tb_logradouros_id_logradouro String                        @unique(map: "tb_enderecos__idx") @db.VarChar(120)
   tb_logradouros               tb_logradouros                @relation(fields: [tb_logradouros_id_logradouro], references: [id_logradouro], onDelete: NoAction, onUpdate: NoAction, map: "tb_enderecos_tb_logradouros_fk")
