@@ -6,7 +6,9 @@ import { UserViewModel } from '../view-module/user-view-model';
 import { randomUUID } from 'node:crypto';
 import { FindUserService } from '@app/services/user/find-user.service';
 import { AuthGuard } from '@app/guards/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(

@@ -14,7 +14,9 @@ import { AuthGuard } from '@app/guards/auth.guard';
 import { CreateAddressService } from '@app/services/address/create-address.service';
 import { JwtService } from '@nestjs/jwt';
 import { randomUUID } from 'crypto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Address')
 @Controller('address')
 export class AddressController {
   constructor(
