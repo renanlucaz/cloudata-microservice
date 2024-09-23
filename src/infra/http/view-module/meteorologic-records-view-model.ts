@@ -1,7 +1,11 @@
 import { MeteorologicRecord } from '@app/entities/MeteorologicRecords';
 
+interface MeteorologicRecordProps extends MeteorologicRecord {
+  endereco: any;
+}
+
 export class MeteorologicRecordsViewModule {
-  static toHTTP(meteorologicRecord: MeteorologicRecord) {
+  static toHTTP(meteorologicRecord: MeteorologicRecordProps) {
     return {
       id: meteorologicRecord.id,
       rainProb: meteorologicRecord.rainProb,
@@ -16,6 +20,7 @@ export class MeteorologicRecordsViewModule {
       longitude: meteorologicRecord.longitude,
       registerType: meteorologicRecord.registerType,
       registerDate: meteorologicRecord.registerDate,
+      endereco: meteorologicRecord.endereco,
     };
   }
 }

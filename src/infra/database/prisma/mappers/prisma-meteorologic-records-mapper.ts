@@ -1,5 +1,9 @@
 import { MeteorologicRecord } from '@app/entities/MeteorologicRecords';
-import { tb_registros_meteorologicos as RawMeteorologicRecords } from '@prisma/client';
+import { tb_registros_meteorologicos, tb_enderecos } from '@prisma/client';
+
+interface RawMeteorologicRecords extends tb_registros_meteorologicos {
+  tb_enderecos: tb_enderecos;
+}
 
 export class PrismaMeteorologicRecordsMapper {
   static toPrisma(meteorologicRecord: MeteorologicRecord, addressId: string) {
@@ -35,6 +39,7 @@ export class PrismaMeteorologicRecordsMapper {
       longitude: raw.longitude,
       registerType: raw.tipo_registro,
       registerDate: raw.dt_registro,
+      endereco: raw.tb_enderecos,
     };
   }
 }
