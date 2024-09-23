@@ -6,6 +6,8 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users-reposi
 import { PrismaAddressRepository } from './prisma/repositories/prisma-address-repository';
 import { EnergyStationRepository } from '@app/repositories/energy-station.repository';
 import { PrismaEnergyStationsRepository } from './prisma/repositories/prisma-energy-stations.repository';
+import { MeteorologicRecordsRepository } from '@app/repositories/meteorologic-records.repository';
+import { PrismaMeteorologicRecordsRepository } from './prisma/repositories/prisma-meteorologic-records.repository';
 
 @Module({
   providers: [
@@ -22,7 +24,16 @@ import { PrismaEnergyStationsRepository } from './prisma/repositories/prisma-ene
       provide: EnergyStationRepository,
       useClass: PrismaEnergyStationsRepository,
     },
+    {
+      provide: MeteorologicRecordsRepository,
+      useClass: PrismaMeteorologicRecordsRepository,
+    },
   ],
-  exports: [UsersRepository, AddressRepository, EnergyStationRepository],
+  exports: [
+    UsersRepository,
+    AddressRepository,
+    EnergyStationRepository,
+    MeteorologicRecordsRepository,
+  ],
 })
 export class DatabaseModule {}

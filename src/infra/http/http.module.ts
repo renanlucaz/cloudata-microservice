@@ -19,6 +19,14 @@ import { NewsController } from './controllers/news.controller';
 import { ListNewsService } from '@app/services/news/list-news.service';
 import { NewsRepository } from '@app/repositories/news-repository';
 import { NewsHttpClient } from './clients/news-http-client';
+import { MeteorologicRecordsControler } from './controllers/meteorologic-records.controller';
+import { ListMeteorologicRecordsService } from '@app/services/meteorologic-records/list-meteorologic-records.service';
+import {
+  CreateMeteorologicPrevisionService,
+  MeteorologicRecordsExternalService,
+} from '@app/services/meteorologic-records/create-meteorologic-prevision.service';
+import { MeteorologicRecordsHttpClient } from './clients/meteorologic-records-http-client';
+import { SaveMeteorologicPrevisionsService } from '@app/services/meteorologic-records/save-meteorologic-prevision.service';
 
 @Module({
   imports: [
@@ -37,6 +45,7 @@ import { NewsHttpClient } from './clients/news-http-client';
     AuthController,
     EnergyStationsController,
     NewsController,
+    MeteorologicRecordsControler,
   ],
   providers: [
     ListUsersService,
@@ -48,9 +57,16 @@ import { NewsHttpClient } from './clients/news-http-client';
     AuthService,
     ListEnergyStationsService,
     ListNewsService,
+    ListMeteorologicRecordsService,
+    SaveMeteorologicPrevisionsService,
     {
       provide: NewsRepository,
       useClass: NewsHttpClient,
+    },
+    CreateMeteorologicPrevisionService,
+    {
+      provide: MeteorologicRecordsExternalService,
+      useClass: MeteorologicRecordsHttpClient,
     },
   ],
 })
