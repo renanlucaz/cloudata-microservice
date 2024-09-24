@@ -90,7 +90,7 @@ model tb_registros_meteorologicos {
 
 model tb_risco_inundacoes {
   id_risco                 String       @id(map: "tb_risco_inundacoes_pk") @db.VarChar(120)
-  valor_risco              Decimal?     @db.Decimal
+  valor_risco              String?      @db.VarChar(120)
   dt_risco                 DateTime?    @db.Date
   tb_enderecos_id_endereco String       @db.VarChar(120)
   tb_enderecos             tb_enderecos @relation(fields: [tb_enderecos_id_endereco], references: [id_endereco], onDelete: NoAction, onUpdate: NoAction, map: "tb_risco_inundacoes_tb_enderecos_fk")

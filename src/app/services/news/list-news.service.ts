@@ -1,6 +1,9 @@
 import { News } from '@app/entities/News';
-import { NewsRepository } from '@app/repositories/news-repository';
 import { Injectable } from '@nestjs/common';
+
+export abstract class NewsExternalService {
+  abstract listNews(search: string): Promise<News[]>;
+}
 
 interface ListNewsServiceRequest {
   search: string;
@@ -12,12 +15,12 @@ interface ListNewsServiceResponse {
 
 @Injectable()
 export class ListNewsService {
-  constructor(private newsRepository: NewsRepository) {}
+  constructor(private newsExternalService: NewsExternalService) {}
 
   async execute({
     search,
   }: ListNewsServiceRequest): Promise<ListNewsServiceResponse> {
-    const news = await this.newsRepository.listNews(search);
+    const news = await this.newsExternalService.listNews(search);
 
     return { news };
   }

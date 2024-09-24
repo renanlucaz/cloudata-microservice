@@ -16,8 +16,10 @@ import { AddressController } from './controllers/address.controller';
 import { AuthController } from './controllers/auth.controller';
 import { EnergyStationsController } from './controllers/energy-stations.controller';
 import { NewsController } from './controllers/news.controller';
-import { ListNewsService } from '@app/services/news/list-news.service';
-import { NewsRepository } from '@app/repositories/news-repository';
+import {
+  ListNewsService,
+  NewsExternalService,
+} from '@app/services/news/list-news.service';
 import { NewsHttpClient } from './clients/news-http-client';
 import { MeteorologicRecordsControler } from './controllers/meteorologic-records.controller';
 import { ListMeteorologicRecordsService } from '@app/services/meteorologic-records/list-meteorologic-records.service';
@@ -27,6 +29,8 @@ import {
 } from '@app/services/meteorologic-records/create-meteorologic-prevision.service';
 import { MeteorologicRecordsHttpClient } from './clients/meteorologic-records-http-client';
 import { SaveMeteorologicPrevisionsService } from '@app/services/meteorologic-records/save-meteorologic-prevision.service';
+import { ListFloodRiskByAddressIdService } from '@app/services/flood-risk/list-flood-risk-by-address-id.service';
+import { FloodRiskController } from './controllers/flood-risk.controller';
 
 @Module({
   imports: [
@@ -46,6 +50,7 @@ import { SaveMeteorologicPrevisionsService } from '@app/services/meteorologic-re
     EnergyStationsController,
     NewsController,
     MeteorologicRecordsControler,
+    FloodRiskController,
   ],
   providers: [
     ListUsersService,
@@ -59,11 +64,12 @@ import { SaveMeteorologicPrevisionsService } from '@app/services/meteorologic-re
     ListNewsService,
     ListMeteorologicRecordsService,
     SaveMeteorologicPrevisionsService,
+    CreateMeteorologicPrevisionService,
+    ListFloodRiskByAddressIdService,
     {
-      provide: NewsRepository,
+      provide: NewsExternalService,
       useClass: NewsHttpClient,
     },
-    CreateMeteorologicPrevisionService,
     {
       provide: MeteorologicRecordsExternalService,
       useClass: MeteorologicRecordsHttpClient,

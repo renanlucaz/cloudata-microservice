@@ -1,4 +1,4 @@
-import type { MeteorologicRecord } from '@app/entities/MeteorologicRecords';
+import { MeteorologicRecord } from '@app/entities/MeteorologicRecords';
 import { HttpMeteorologicRecordMapper } from '@infra/database/prisma/mappers/http-meteorologic-previsions-mapper';
 import { Injectable } from '@nestjs/common';
 
