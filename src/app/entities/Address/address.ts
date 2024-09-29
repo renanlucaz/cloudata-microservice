@@ -8,6 +8,7 @@ interface AddressProps {
   longitude: number;
   street: string;
   createdAt: Date;
+  previsions?: any;
 }
 
 export class Address {
@@ -79,5 +80,9 @@ export class Address {
 
   public get createdAt() {
     return this.props.createdAt;
+  }
+
+  public get previsions() {
+    return this.props.previsions;
   }
 }

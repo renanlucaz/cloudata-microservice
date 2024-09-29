@@ -31,6 +31,16 @@ import { MeteorologicRecordsHttpClient } from './clients/meteorologic-records-ht
 import { SaveMeteorologicPrevisionsService } from '@app/services/meteorologic-records/save-meteorologic-prevision.service';
 import { ListFloodRiskByAddressIdService } from '@app/services/flood-risk/list-flood-risk-by-address-id.service';
 import { FloodRiskController } from './controllers/flood-risk.controller';
+import {
+  AddressExternalService,
+  GetAddressByCepService,
+} from '@app/services/address/get-adderss-by-cep.service';
+import {
+  AddressLatlongExternalService,
+  GetAddressLatlongService,
+} from '@app/services/address/get-latlong-by-address.service';
+import { AddressByCEPClient } from './clients/address-by-cep-http-client';
+import { AddressLatlongClient } from './clients/latlong-by-address-http-client';
 
 @Module({
   imports: [
@@ -66,6 +76,8 @@ import { FloodRiskController } from './controllers/flood-risk.controller';
     SaveMeteorologicPrevisionsService,
     CreateMeteorologicPrevisionService,
     ListFloodRiskByAddressIdService,
+    GetAddressLatlongService,
+    GetAddressByCepService,
     {
       provide: NewsExternalService,
       useClass: NewsHttpClient,
@@ -73,6 +85,14 @@ import { FloodRiskController } from './controllers/flood-risk.controller';
     {
       provide: MeteorologicRecordsExternalService,
       useClass: MeteorologicRecordsHttpClient,
+    },
+    {
+      provide: AddressExternalService,
+      useClass: AddressByCEPClient,
+    },
+    {
+      provide: AddressLatlongExternalService,
+      useClass: AddressLatlongClient,
     },
   ],
 })

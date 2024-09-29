@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Headers,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +15,8 @@ import { CreateAddressService } from '@app/services/address/create-address.servi
 import { JwtService } from '@nestjs/jwt';
 import { randomUUID } from 'crypto';
 import { ApiTags } from '@nestjs/swagger';
+import { GetAddressByCepService } from '@app/services/address/get-adderss-by-cep.service';
+import { GetAddressLatlongService } from '@app/services/address/get-latlong-by-address.service';
 
 @ApiTags('Address')
 @Controller('address')
@@ -22,6 +25,8 @@ export class AddressController {
     private listAddressByIdService: ListAddressByIdService,
     private createAddressService: CreateAddressService,
     private jwtService: JwtService,
+    private getAddressByCEPService: GetAddressByCepService,
+    private getLatlongByAddressService: GetAddressLatlongService,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -60,5 +65,21 @@ export class AddressController {
     const { addressList } = await this.listAddressByIdService.execute(userId);
 
     return addressList.map(AddressViewModel.toHTTP);
+  }
+
+  @Get(':cep')
+  async getAddressByCEP(@Param() params: { cep: string }) {
+    const { cep } = params;
+    const address = await this.getAddressByCEPService.execute(cep);
+
+    const { latlong } = await this.getLatlongByAddressService.execute(
+      address.address,
+    );
+
+    return {
+      ...address.address,
+      latitude: latlong.lat,
+      longitude: latlong.lng,
+    };
   }
 }

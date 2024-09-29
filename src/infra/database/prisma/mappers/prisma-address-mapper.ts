@@ -22,6 +22,7 @@ interface RawStreets extends tb_logradouros {
 
 interface RawAddress extends tb_enderecos {
   tb_logradouros: RawStreets;
+  tb_registros_meteorologicos: any;
 }
 
 export class PrismaAddressMapper {
@@ -73,6 +74,7 @@ export class PrismaAddressMapper {
       city: raw.tb_logradouros.tb_bairros.tb_municipios.nm_municipio,
       uf: raw.tb_logradouros.tb_bairros.tb_municipios.tb_estados.nm_estado,
       createdAt: raw.dt_criacao,
+      previsions: raw.tb_registros_meteorologicos,
     };
   }
 }

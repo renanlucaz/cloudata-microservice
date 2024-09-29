@@ -12,6 +12,7 @@ export class AddressViewModel {
       longitude: address.longitude,
       street: address.street,
       createdAt: address.createdAt,
+      previsions: address.previsions,
     };
   }
 }

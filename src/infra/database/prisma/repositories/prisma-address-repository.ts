@@ -20,6 +20,11 @@ export class PrismaAddressRepository implements AddressRepository {
     const address = await this.prismaService.tb_enderecos.findMany({
       where: { tb_usuarios_id_usuario: id },
       include: {
+        tb_registros_meteorologicos: {
+          select: {
+            prb_chuva: true,
+          },
+        },
         tb_logradouros: {
           include: {
             tb_bairros: {
