@@ -40,6 +40,9 @@ export class PrismaMeteorologicRecordsRepository
         where: {
           tb_enderecos_id_endereco: addressId,
         },
+        orderBy: {
+          prb_chuva: 'desc',
+        },
       });
 
     return meteorologicRecords.map(PrismaMeteorologicRecordsMapper.toDomain);
