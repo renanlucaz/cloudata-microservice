@@ -4,7 +4,6 @@ import {
   Controller,
   Get,
   Headers,
-  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -52,9 +51,13 @@ export class AddressController {
   }
 
   @UseGuards(AuthGuard)
-  @Get(':id')
-  async listAddressById(@Param('id') id: string) {
-    const { addressList } = await this.listAddressByIdService.execute(id);
+  @Get()
+  async listAddressById(@Headers() headers) {
+    const jwtToken = headers.authorization.split(' ')[1];
+
+    const userId = await this.jwtService.decode(jwtToken);
+
+    const { addressList } = await this.listAddressByIdService.execute(userId);
 
     return addressList.map(AddressViewModel.toHTTP);
   }

@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 interface ListMeteorologicRecordsServiceRequest {
   startDate: Date;
   endDate: Date;
+  addressId: string;
 }
 
 interface ListMeteorologicRecordsServiceResponse {
@@ -20,11 +21,13 @@ export class ListMeteorologicRecordsService {
   async execute({
     startDate,
     endDate,
+    addressId,
   }: ListMeteorologicRecordsServiceRequest): Promise<ListMeteorologicRecordsServiceResponse> {
     const meteorologicRecords =
-      await this.metereologicRecordsRepository.listMeteorologicRecordsByDate(
+      await this.metereologicRecordsRepository.listMeteorologicRecordsByAddressId(
         startDate,
         endDate,
+        addressId,
       );
 
     return { meteorologicRecords };

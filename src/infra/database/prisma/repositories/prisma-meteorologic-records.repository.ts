@@ -30,28 +30,15 @@ export class PrismaMeteorologicRecordsRepository
     return meteorologicPrevisions.map(PrismaMeteorologicRecordsMapper.toDomain);
   }
 
-  async listMeteorologicRecordsByDate(
+  async listMeteorologicRecordsByAddressId(
     startDate: Date,
     endDate: Date,
+    addressId: string,
   ): Promise<any> {
     const meteorologicRecords =
       await this.prismaService.tb_registros_meteorologicos.findMany({
         where: {
-          dt_registro: {
-            gte: new Date(startDate),
-            lte: new Date(endDate),
-          },
-        },
-        include: {
-          tb_enderecos: {
-            include: {
-              tb_logradouros: {
-                select: {
-                  nm_logradouro: true,
-                },
-              },
-            },
-          },
+          tb_enderecos_id_endereco: addressId,
         },
       });
 
