@@ -16,7 +16,30 @@ export class PrismaMeteorologicRecordsRepository
     const meteorologicRecord =
       await this.prismaService.tb_registros_meteorologicos.findFirst({
         where: { id_registro: meteorologicRecordId },
-        include: { tb_enderecos: true },
+        include: {
+          tb_enderecos: {
+            include: {
+              tb_logradouros: {
+                include: {
+                  tb_bairros: {
+                    include: {
+                      tb_municipios: {
+                        include: {
+                          tb_estados: {
+                            select: {
+                              id_uf: true,
+                              nm_estado: true,
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       });
 
     return PrismaMeteorologicRecordsMapper.toDomain(meteorologicRecord);

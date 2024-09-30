@@ -1,8 +1,32 @@
 import { MeteorologicRecord } from '@app/entities/MeteorologicRecords';
-import { tb_registros_meteorologicos, tb_enderecos } from '@prisma/client';
+import {
+  tb_registros_meteorologicos,
+  tb_enderecos,
+  type tb_logradouros,
+  type tb_bairros,
+  type tb_municipios,
+  type tb_estados,
+} from '@prisma/client';
+
+interface RawCities extends tb_municipios {
+  tb_estados: tb_estados;
+}
+
+interface RawNeightborhoods extends tb_bairros {
+  tb_municipios: RawCities;
+}
+
+interface RawStreets extends tb_logradouros {
+  tb_bairros: RawNeightborhoods;
+}
+
+interface RawAddress extends tb_enderecos {
+  tb_logradouros: RawStreets;
+  tb_registros_meteorologicos?: any;
+}
 
 interface RawMeteorologicRecords extends tb_registros_meteorologicos {
-  tb_enderecos: tb_enderecos;
+  tb_enderecos: RawAddress;
 }
 
 export class PrismaMeteorologicRecordsMapper {
@@ -39,7 +63,18 @@ export class PrismaMeteorologicRecordsMapper {
       longitude: raw.longitude,
       registerType: raw.tipo_registro,
       registerDate: raw.dt_registro,
-      endereco: raw.tb_enderecos,
+      address: {
+        id: raw.tb_enderecos.id_endereco,
+        number: raw.tb_enderecos.numero,
+        latitude: raw.tb_enderecos.latitude,
+        longitude: raw.tb_enderecos.longitude,
+        street: raw.tb_enderecos.tb_logradouros.nm_logradouro,
+        neightborhood: raw.tb_enderecos.tb_logradouros.tb_bairros.nm_bairro,
+        city: raw.tb_enderecos.tb_logradouros.tb_bairros.tb_municipios
+          .nm_municipio,
+        uf: raw.tb_enderecos.tb_logradouros.tb_bairros.tb_municipios.tb_estados
+          .nm_estado,
+      },
     };
   }
 }

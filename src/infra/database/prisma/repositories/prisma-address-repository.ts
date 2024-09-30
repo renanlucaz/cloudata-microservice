@@ -33,6 +33,7 @@ export class PrismaAddressRepository implements AddressRepository {
                   include: {
                     tb_estados: {
                       select: {
+                        id_uf: true,
                         nm_estado: true,
                       },
                     },
