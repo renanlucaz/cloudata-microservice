@@ -49,6 +49,36 @@ export class PrismaMeteorologicRecordsMapper {
     };
   }
   static toDomain(raw: RawMeteorologicRecords) {
+    if (raw.tb_enderecos) {
+      return {
+        id: raw.id_registro,
+        rainProb: raw.prb_chuva,
+        maxHumidity: raw.umidade_max,
+        minHumidity: raw.umidade_min,
+        minWindSpeed: raw.vel_vento_min,
+        maxWindSpeed: raw.vel_vento_max,
+        minTemperature: raw.temperatura_min,
+        maxTemperature: raw.temperatura_max,
+        description: raw.descricao,
+        latitude: raw.latitude,
+        longitude: raw.longitude,
+        registerType: raw.tipo_registro,
+        registerDate: raw.dt_registro,
+        address: {
+          id: raw.tb_enderecos.id_endereco,
+          number: raw.tb_enderecos.numero,
+          latitude: raw.tb_enderecos.latitude,
+          longitude: raw.tb_enderecos.longitude,
+          street: raw.tb_enderecos.tb_logradouros.nm_logradouro,
+          neightborhood: raw.tb_enderecos.tb_logradouros.tb_bairros.nm_bairro,
+          city: raw.tb_enderecos.tb_logradouros.tb_bairros.tb_municipios
+            .nm_municipio,
+          uf: raw.tb_enderecos.tb_logradouros.tb_bairros.tb_municipios
+            .tb_estados.nm_estado,
+        },
+      };
+    }
+
     return {
       id: raw.id_registro,
       rainProb: raw.prb_chuva,
@@ -63,18 +93,6 @@ export class PrismaMeteorologicRecordsMapper {
       longitude: raw.longitude,
       registerType: raw.tipo_registro,
       registerDate: raw.dt_registro,
-      address: {
-        id: raw.tb_enderecos.id_endereco,
-        number: raw.tb_enderecos.numero,
-        latitude: raw.tb_enderecos.latitude,
-        longitude: raw.tb_enderecos.longitude,
-        street: raw.tb_enderecos.tb_logradouros.nm_logradouro,
-        neightborhood: raw.tb_enderecos.tb_logradouros.tb_bairros.nm_bairro,
-        city: raw.tb_enderecos.tb_logradouros.tb_bairros.tb_municipios
-          .nm_municipio,
-        uf: raw.tb_enderecos.tb_logradouros.tb_bairros.tb_municipios.tb_estados
-          .nm_estado,
-      },
     };
   }
 }
