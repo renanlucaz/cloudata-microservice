@@ -10,6 +10,18 @@ export class PrismaMeteorologicRecordsRepository
 {
   constructor(private prismaService: PrismaService) {}
 
+  async getMeteorologicRecordDetails(
+    meteorologicRecordId: string,
+  ): Promise<any> {
+    const meteorologicRecord =
+      await this.prismaService.tb_registros_meteorologicos.findFirst({
+        where: { id_registro: meteorologicRecordId },
+        include: { tb_enderecos: true },
+      });
+
+    return PrismaMeteorologicRecordsMapper.toDomain(meteorologicRecord);
+  }
+
   async saveMeteorologicPrevisions(
     meteorologicPrevisionList: MeteorologicRecord[],
     addressId: string,

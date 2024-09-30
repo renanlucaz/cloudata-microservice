@@ -41,6 +41,7 @@ import {
 } from '@app/services/address/get-latlong-by-address.service';
 import { AddressByCEPClient } from './clients/address-by-cep-http-client';
 import { AddressLatlongClient } from './clients/latlong-by-address-http-client';
+import { GetMeteorologicRecordDetailsService } from '@app/services/meteorologic-records/get-meteorologic-record-details.service';
 
 @Module({
   imports: [
@@ -78,6 +79,7 @@ import { AddressLatlongClient } from './clients/latlong-by-address-http-client';
     ListFloodRiskByAddressIdService,
     GetAddressLatlongService,
     GetAddressByCepService,
+    GetMeteorologicRecordDetailsService,
     {
       provide: NewsExternalService,
       useClass: NewsHttpClient,

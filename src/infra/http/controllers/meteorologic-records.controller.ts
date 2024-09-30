@@ -5,6 +5,7 @@ import { CreateMeteorologicPrevisionService } from '@app/services/meteorologic-r
 import { SaveMeteorologicPrevisionsService } from '@app/services/meteorologic-records/save-meteorologic-prevision.service';
 import { CreateMetereologicPrevisionDTO } from '../dtos/CreateMeteorologicPrevisionDTO';
 import { ApiTags } from '@nestjs/swagger';
+import { GetMeteorologicRecordDetailsService } from '@app/services/meteorologic-records/get-meteorologic-record-details.service';
 
 @ApiTags('Meteorologic Records')
 @Controller('meteorologic-records')
@@ -13,6 +14,7 @@ export class MeteorologicRecordsControler {
     private listMeteorologicRecords: ListMeteorologicRecordsService,
     private createMeteorologicPrevisions: CreateMeteorologicPrevisionService,
     private saveMeteorologicPrevisions: SaveMeteorologicPrevisionsService,
+    private getMeteorologicRecordDetails: GetMeteorologicRecordDetailsService,
   ) {}
 
   @Post('prevision')
@@ -49,5 +51,15 @@ export class MeteorologicRecordsControler {
         MeteorologicRecordsViewModule.toHTTP,
       ),
     };
+  }
+
+  @Get('/details/:meteorologicRecordId')
+  async getDetails(
+    @Param('meteorologicRecordId') meteorologicRecordId: string,
+  ) {
+    const meteorologicRecordDetails =
+      await this.getMeteorologicRecordDetails.execute(meteorologicRecordId);
+
+    return MeteorologicRecordsViewModule.toHTTP(meteorologicRecordDetails);
   }
 }

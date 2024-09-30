@@ -12,6 +12,7 @@ interface MeteorologicRecordProps {
   longitude?: number;
   registerType: string;
   registerDate: Date;
+  endereco?: any;
 }
 
 export class MeteorologicRecord {
@@ -122,5 +123,9 @@ export class MeteorologicRecord {
 
   set registerDate(value: Date) {
     this.props.registerDate = value;
+  }
+
+  get endereco() {
+    return this.props.endereco;
   }
 }

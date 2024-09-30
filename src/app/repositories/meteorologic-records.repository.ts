@@ -10,4 +10,7 @@ export abstract class MeteorologicRecordsRepository {
     meteorologicPrevisionList: MeteorologicRecord[],
     addressId: string,
   ): Promise<MeteorologicRecord[]>;
+  abstract getMeteorologicRecordDetails(
+    meteorologicRecordId: string,
+  ): Promise<MeteorologicRecord>;
 }
