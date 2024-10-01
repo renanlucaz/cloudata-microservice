@@ -42,6 +42,7 @@ import {
 import { AddressByCEPClient } from './clients/address-by-cep-http-client';
 import { AddressLatlongClient } from './clients/latlong-by-address-http-client';
 import { GetMeteorologicRecordDetailsService } from '@app/services/meteorologic-records/get-meteorologic-record-details.service';
+import { CreateFloodRiskService } from '@app/services/flood-risk/create-flood-risk.service';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { GetMeteorologicRecordDetailsService } from '@app/services/meteorologic-
     SaveMeteorologicPrevisionsService,
     CreateMeteorologicPrevisionService,
     ListFloodRiskByAddressIdService,
+    CreateFloodRiskService,
     GetAddressLatlongService,
     GetAddressByCepService,
     GetMeteorologicRecordDetailsService,
